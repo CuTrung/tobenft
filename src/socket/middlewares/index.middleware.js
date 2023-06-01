@@ -11,7 +11,7 @@ module.exports = {
 
         if (accessToken) {
             socket.mess = 'valid'
-            console.log(">>> access", accessToken);
+            console.log(">>> accessToken", accessToken);
             next();
         }
         socket.disconnect();

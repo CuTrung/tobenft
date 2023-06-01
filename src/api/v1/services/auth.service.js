@@ -2,7 +2,7 @@ const { serviceResult, SERVICE_STATUS } = require("@v1/utils/api.util");
 const { compareHashString, createJWT, hashString } = require("@v1/utils/token.util");
 const { getUserBy, createUser, } = require("./user.service");
 const { Op } = require("./db/sql.service");
-const { updatePieceBy } = require("./piece.service");
+const { updatePieceBy, getPieceBy } = require("./piece.service");
 
 module.exports = {
     register: async ({ name, email, password }) => {

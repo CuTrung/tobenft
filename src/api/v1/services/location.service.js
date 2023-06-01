@@ -8,7 +8,7 @@ const that = module.exports = {
             return serviceResult({
                 status: SERVICE_STATUS.SUCCESS,
                 message: 'Get location success',
-                data: await selectCondition('tb_locationnft', { fields, ...condition })
+                data: await select('tb_locationnft', { fields, where: condition })
             })
         } catch (error) {
             console.log(">>> ~ file: location.service.js:14 ~ getLocationBy: ~ error: ", error)
@@ -20,32 +20,23 @@ const that = module.exports = {
             return serviceResult({
                 status: SERVICE_STATUS.SUCCESS,
                 message: 'Get location_piece success',
-                data: await selectCondition('tb_locationnft_piece', { fields, ...condition })
+                data: await select('tb_locationnft_piece', { fields, where: condition })
             })
         } catch (error) {
             console.log(">>> ~ file: location.service.js:26 ~ getLocation_PieceBy: ~ error: ", error)
             return serviceResult();
         }
     },
-    updateLocation_Piece: async ({ data, where: condition }) => {
+    updateLocation_Piece: async ({ data, where: condition, connection }) => {
         try {
-            const { data: location_Piece, status } = await that.getLocation_PieceBy({
-                fields: ['id'],
-                where: condition
-            });
-
-            if (status === SERVICE_STATUS.ERROR) return serviceResult()
-
-            if (location_Piece[0] === undefined) {
-                return serviceResult({
-                    status: SERVICE_STATUS.SUCCESS,
-                    message: 'Not found any location_Piece to updated'
-                })
-            }
             return serviceResult({
                 status: SERVICE_STATUS.SUCCESS,
                 message: 'Update location_Piece success',
-                data: await update("tb_location_Piece", data, `where id = ${location_Piece[0].id}`)
+                data: await update("tb_Locationnft_Piece", {
+                    data,
+                    connection,
+                    where: condition
+                })
             })
         } catch (error) {
             console.log(">>> ~ file: location.service.js:51 ~ updateLocation_Piece: ~ error: ", error)

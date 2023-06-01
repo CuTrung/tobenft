@@ -1,4 +1,4 @@
-const API_BACKEND = "ws://localhost:8000";
+const API_BACKEND = "ws://localhost:3000";
 
 const auth = {
     accessToken: 123,
