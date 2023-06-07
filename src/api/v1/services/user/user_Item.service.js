@@ -1,4 +1,4 @@
-const { serviceResult } = require("@v1/utils/api.util");
+const { serviceResult, SERVICE_STATUS } = require("@v1/utils/api.util");
 const { mysqlService } = require("../db/sql.service")
 const { select, insert } = mysqlService();
 

@@ -66,7 +66,7 @@ const that = module.exports = {
         const data = await transaction(async (connection) => {
             for (const userPiece of pieceOfUser) {
                 if (userPiece.quantity === 1) {
-                    const { data: dataUser_PieceDel } = await that.deleteUser_PieceBy({
+                    const { data: dataUser_PieceDel } = await deleteUser_PieceBy({
                         where: {
                             [Op.AND]: [
                                 {
@@ -138,7 +138,7 @@ const that = module.exports = {
 
             if (userItem === "") return serviceResult();
 
-            return item;
+            return itemUpdate;
         })
 
         if (data === "") return serviceResult();
