@@ -10,9 +10,8 @@ const { validateRequest } = require("@v1/validations/index.validation");
 module.exports = {
     getAllLocation: async (req, res) => {
         const messagesError = validateRequest({
-            // km: "number",
-            // userLat: 'number',
-            // userLng: 'number',
+            userLat: 'number',
+            userLng: 'number',
         }, req.query);
 
         if (messagesError.length > 0)
@@ -20,8 +19,8 @@ module.exports = {
                 message: messagesError.join("OR"),
             }))
 
-        const { status } = await getAllLocation(req.query);
-        return res.status(status === SERVICE_STATUS.ERROR ? 500 : 200).json(data)
+        const data = await getAllLocation(req.query);
+        return res.status(data.status === SERVICE_STATUS.ERROR ? 500 : 200).json(data)
     },
 
 

@@ -1,6 +1,7 @@
 const { serviceResult, SERVICE_STATUS } = require("@v1/utils/api.util");
 const { mysqlService, Op } = require("./db/sql.service");
 const { getItemBy } = require("./item.service");
+const { calculateDistanceKm } = require("@v1/utils/index.util");
 const { select, update } = mysqlService();
 
 const that = module.exports = {
@@ -46,20 +47,13 @@ const that = module.exports = {
     },
     getAllLocation: async ({ userLat, userLng, kilometers = 5 } = {}) => {
         try {
-            const dataKilo = [];
-            await getItemBy({
-                fields: ['amountOfCoins', 'splitTo']
-
-            })
             const dataSelect = await select('tb_locationnft l', {
-                fields: ['l.id', 'l.address', 'l.latitude', 'l.longitude', 'p.id', 'p.itemId', 'p.quantityReality',],
-                queryAtTheEnd: 'INNER JOIN tb_locationnft_piece lp ON lp.locationId = l.id INNER JOIN tb_Piece p ON lp.pieceId = p.id',
+                fields: ['l.id', 'l.address', 'l.latitude', 'l.longitude', 'p.id as `pieceId`', 'p.itemId', 'p.quantityReality', 'i.splitTo', 'i.amountOfCoins'],
+                queryAtTheEnd: 'INNER JOIN tb_locationnft_piece lp ON lp.locationId = l.id INNER JOIN tb_Piece p ON lp.pieceId = p.id INNER JOIN tb_item i ON i.id = p.itemId',
             });
 
-
-            console.log(">>> here", dataSelect);
-            return;
-            const data = Promise.all(dataSelect.map(async (item) => {
+            let data = [];
+            for (let item of dataSelect) {
                 const distance = calculateDistanceKm({
                     lat1: userLat,
                     lon1: userLng
@@ -68,47 +62,39 @@ const that = module.exports = {
                     lon2: item.longitude
                 });
 
-                const { data: dataItem } = await getItemBy({
-                    fields: ['splitTo', 'amountOfCoins'],
-                    where: {
-                        [Op.AND]: [
-                            { id: item.itemId }
-                        ]
-                    }
-                })
+                if (distance >= kilometers) continue;
 
-                if (distance <= kilometers) {
-                    console.log(distance);
-                    dataKilo.push(item);
+                item = {
+                    id: item.id,
+                    address: item.address,
+                    latitude: item.latitude,
+                    longitude: item.longitude,
+                    pieces: [{
+                        id: item.pieceId,
+                        quantityReality: item.quantityReality,
+                        amountOfCoins: item.amountOfCoins / item.splitTo,
+                        itemId: item.itemId,
+                    }],
                 }
-            }));
 
-            // Gom nhóm các piece
-            const combinedArray = Object.values(dataKilo.reduce((acc, obj) => {
-                const { locationnftId, address, latitude, longitude, ...rest } = obj;
-                if (!acc[locationnftId]) {
-                    acc[locationnftId] = { locationnftId, address, latitude, longitude, piece: [] };
+                let match = data.find(r => r.id === item.id);
+                if (match) {
+
+                    match.pieces = match.pieces.concat(item.pieces);
+                } else {
+                    data.push(item);
                 }
-                acc[locationnftId].piece.push({
-                    pieceId: obj.pieceId,
-                    totalPiece: obj.totalPiece,
-                    totalPieceReality: obj.totalPieceReality,
-                    src: obj.src,
-                    priceCoin: obj.priceCoin
-                });
-                return acc
-            }, {}));
-            console.log(combinedArray);
+            }
 
-            return resFormat({
-                status: RES_STATUS.SUCCESS,
-                message: "All data of locationNFT",
-                data: combinedArray
+            return serviceResult({
+                status: SERVICE_STATUS.SUCCESS,
+                message: "Get all location success",
+                data
             })
         }
         catch (error) {
             console.log(">>> ~ file: location.service ~ location: ~ error: ", error);
-            return resFormat()
+            return serviceResult();
         }
     },
 }

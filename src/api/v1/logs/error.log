@@ -1,2 +1,16 @@
 ::1 - GET /api/location HTTP/1.1 400 60 - 28.571 ms
 ::1 - GET /api/db/migrate HTTP/1.1 304 - - 417.421 ms
+::1 - GET /api/db/migrate HTTP/1.1 304 - - 306.844 ms
+::1 - GET /api/location HTTP/1.1 200 572 - 173.917 ms
+::1 - GET /api/location?userLat=5&userLng=5 HTTP/1.1 400 60 - 25.485 ms
+::1 - GET /api/location?userLat=5&userLng=5 HTTP/1.1 200 614 - 123.759 ms
+::1 - GET /api/location?userLat=5&userLng=5 HTTP/1.1 200 2 - 168.079 ms
+::1 - GET /api/location?userLat=5&userLng=5 HTTP/1.1 304 - - 121.652 ms
+::1 - GET /api/location?userLat=5&userLng=5 HTTP/1.1 304 - - 191.263 ms
+::1 - GET /api/location?userLat=5&userLng=5 HTTP/1.1 304 - - 171.554 ms
+::1 - GET /api/location?userLat=5&userLng=5 HTTP/1.1 200 614 - 122.817 ms
+::1 - GET /api/location?userLat=5&userLng=5 HTTP/1.1 200 679 - 107.776 ms
+::1 - GET /api/location?userLat=5&userLng=5 HTTP/1.1 200 591 - 124.509 ms
+::1 - GET /api/location?userLat=5&userLng=5 HTTP/1.1 200 679 - 108.315 ms
+::1 - GET /api/location?userLat=5&userLng=5 HTTP/1.1 200 67 - 182.967 ms
+::1 - GET /api/location?userLat=10.772795&userLng=106.637332 HTTP/1.1 200 681 - 188.273 ms
