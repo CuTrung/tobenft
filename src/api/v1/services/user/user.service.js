@@ -4,7 +4,6 @@ const { getPieceBy } = require("../piece.service")
 const { toDateTimeMySQL } = require("@v1/utils/index.util")
 const { updateItemBy, getItemBy } = require("../item.service")
 const { getUser_PieceBy, updateUser_Piece, deleteUser_PieceBy, createTrackingUser_Piece } = require("./user_Piece.service")
-const { pickupPiece } = require("@src/socket/services/location.service")
 const { createUser_Item } = require("./user_Item.service")
 
 const { select, insert, transaction, update, _delete } = mysqlService()
@@ -49,9 +48,10 @@ const that = module.exports = {
 
         const { data: pieceOfUser } = await getUser_PieceBy({
             fields: ['userId', 'pieceId', 'quantity'],
-            where: {
-                [Op.AND]: pieceOfItem.map(piece => ({ userId, pieceId: piece.id }))
-            },
+            // where: {
+            //     [Op.AND]: pieceOfItem.map(piece => ({ userId, pieceId: piece.id }))
+            // },
+            queryAtTheEnd: `WHERE userId = ${userId} AND pieceId IN (${pieceOfItem.map(piece => piece.id).join(", ")})`,
             connection
         })
 

@@ -1,14 +1,14 @@
-const { serviceResult } = require("@v1/utils/api.util");
+const { serviceResult, SERVICE_STATUS } = require("@v1/utils/api.util");
 const { mysqlService } = require("../db/sql.service")
 const { select, insert, update, _delete } = mysqlService();
 
 module.exports = {
-    getUser_PieceBy: async ({ fields, where: condition, joins, connection, }) => {
+    getUser_PieceBy: async ({ fields, where: condition, joins, queryAtTheEnd, connection, }) => {
         try {
             return serviceResult({
                 status: SERVICE_STATUS.SUCCESS,
                 message: 'Get User_Piece success',
-                data: await select('tb_User_Piece', { fields, where: condition, joins, connection })
+                data: await select('tb_User_Piece', { fields, where: condition, joins, queryAtTheEnd, connection })
             })
         } catch (error) {
             console.log(">>> ~ file: user.service.js:223 ~ getUser_PieceBy: ~ error: ", error)
