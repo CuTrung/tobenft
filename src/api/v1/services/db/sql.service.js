@@ -125,7 +125,13 @@ const that = module.exports = {
         const _delete = async (table, { queryAtTheEnd, connection, where: condition }) => {
             const query = `DELETE FROM ${table} ${queryAtTheEnd ?? mergeCondition(condition)}`;
             const [rows] = await execQuery({ query, connection });
-            return rows;
+            if (rows?.affectedRows)
+                return await select(table, {
+                    where: condition,
+                    queryAtTheEnd,
+                    connection
+                });
+            return null;
         }
 
         // join = [{type, table, on}]

@@ -9,7 +9,7 @@ const { validateRequest } = require("@v1/validations/index.validation");
 module.exports = {
     getPieceDetails: async (req, res) => {
         const messagesError = validateRequest({
-            pieceId: "required|number:(min:1)",
+            id: "required|number:(min:1)",
         }, req.params);
 
         if (messagesError.length > 0)
@@ -19,7 +19,7 @@ module.exports = {
 
         const { status } = await getPieceBy({
             where: {
-                [Op.AND]: [{ id: req.params }]
+                [Op.AND]: [{ id: req.params.id }]
             }
 
         });
@@ -33,10 +33,10 @@ module.exports = {
             quantitySwap: "number"
         }, req.body)
         if (messagesError.length > 0)
-            return res.status(400).json(resFormat({
-                message: messagesError.join("Error"),
+            return res.status(400).json(serviceResult({
+                message: messagesError.join("OR"),
             }))
         const data = await swapPiecesToCoin(req.body);
-        return res.status(data.status === RES_STATUS.SUCCESS ? 200 : 500).json(data)
+        return res.status(data.status === SERVICE_STATUS.SUCCESS ? 200 : 500).json(data)
     },
 }

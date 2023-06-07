@@ -2,7 +2,7 @@ const { getPieceDetails, swapPiecesToCoin } = require('@v1/controllers/piece.con
 const express = require('express');
 const router = express.Router();
 
-router.route('/piece/:pieceId')
+router.route('/piece/:id')
     .get(getPieceDetails)
 
 router.route('/piece/swap').post(swapPiecesToCoin)

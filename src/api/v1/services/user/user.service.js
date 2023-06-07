@@ -28,7 +28,7 @@ const that = module.exports = {
                 status: SERVICE_STATUS.SUCCESS,
                 message: 'Create user success',
                 data: await insert('tb_user', {
-                    fields: { name, email, password },
+                    data: [{ name, email, password }],
                 })
             })
         } catch (error) {
@@ -169,7 +169,7 @@ const that = module.exports = {
                     })
 
                 let dataUpdated;
-                if (userPiece[0].quantity === 1) {
+                if (userPiece[0].quantity === 1 && userPiece[0].quantity >= quantitySwap) {
                     const { data: dataDeleteUserPiece } = await deleteUser_PieceBy({
                         where: {
                             [Op.AND]: [{ userId, pieceId }]

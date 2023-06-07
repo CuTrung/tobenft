@@ -14,3 +14,4 @@
 ::1 - GET /api/location?userLat=5&userLng=5 HTTP/1.1 200 679 - 108.315 ms
 ::1 - GET /api/location?userLat=5&userLng=5 HTTP/1.1 200 67 - 182.967 ms
 ::1 - GET /api/location?userLat=10.772795&userLng=106.637332 HTTP/1.1 200 681 - 188.273 ms
+::1 - GET /api/location?userLat=10.772795&userLng=106.637332 HTTP/1.1 200 589 - 135.349 ms
