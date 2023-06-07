@@ -1,7 +1,7 @@
 module.exports = initServer = (app) => {
     require('module-alias/register');
     const { initRoutes } = require('@v1/routes/index.route');
-    const { configWriteLog, configCors, configSwagger } = require('@src/configs/index.config');
+    const { configWriteLog, configCors } = require('@src/configs/index.config');
     const { connectMySQL, connectMongoDB, connectRedis } = require('@src/configs/db.config');
     const bodyParser = require('body-parser');
     const cookieParser = require('cookie-parser');

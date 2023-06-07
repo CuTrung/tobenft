@@ -1,7 +1,8 @@
 const { Op, mysqlService } = require("@v1/services/db/sql.service");
 const { getLocationBy, updateLocation_Piece, getLocation_PieceBy } = require("@v1/services/location.service");
 const { getPieceBy, updatePieceBy } = require("@v1/services/piece.service");
-const { createUser_LocationNFTPiece, getUser_LocationNFTPieceBy, updateUser_LocationNFTPiece, getUser_PieceBy, createUser_Piece, updateUser_Piece } = require("@v1/services/user.service");
+const { createUser_LocationNFTPiece } = require("@v1/services/user/user_LocationNFTPiece.service");
+const { getUser_PieceBy, updateUser_Piece } = require("@v1/services/user/user_Piece.service");
 const { serviceResult, SERVICE_STATUS } = require("@v1/utils/api.util");
 const { calculateDistanceKm, toDateTimeMySQL } = require("@v1/utils/index.util");
 const { transaction } = mysqlService()
@@ -87,7 +88,7 @@ const that = module.exports = {
                     })
 
                     // update quantityReality 
-                    const { data: piece, status: pieceStatus } = await ({
+                    const { data: piece, status: pieceStatus } = await getPieceBy({
                         fields: ['quantityReality'],
                         where: {
                             [Op.AND]: [
@@ -149,7 +150,9 @@ const that = module.exports = {
 
                     return piece[0];
                 })
-                if (data === "") return sendResult(serviceResult())
+
+                if (data === "") return sendResult(serviceResult());
+
                 sendResult(serviceResult({
                     status: SERVICE_STATUS.SUCCESS,
                     message: 'Pickup piece success',

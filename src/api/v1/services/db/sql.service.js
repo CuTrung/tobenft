@@ -88,7 +88,8 @@ const that = module.exports = {
             const values = data.map((field) => Object.values({
                 ...itemDefault,
                 ...field
-            }))
+            }));
+
             const columns = Object.keys(itemDefault);
             const lastInsertId = await execQuery({ query: `SELECT MAX(id) as id FROM ${table};` }).then(([result]) => result[0].id);
 

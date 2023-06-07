@@ -9,6 +9,7 @@ createTable('tb_Item', {
         active: 'int(1) DEFAULT 1',
         src: 'varchar(255)',
         splitTo: 'int', // cắt thành n piece
+        amountOfCoins: 'int', // default: tobe coin
         quantity: 'int',
         quantityReality: 'int',
     },
@@ -19,7 +20,7 @@ createTable('tb_Piece', {
     fields: {
         itemId: 'int',
         src: 'varchar(255)',
-        priceCoin: 'float',
+        // quantityCoin: 3,
         quantity: 'int',
         quantityReality: 'int',
     },
@@ -93,17 +94,6 @@ createTable('tb_User_Item', {
         userId: 'int',
         itemId: 'int',
         quantityItem: 'int',
-    },
-    timestamp: true
-});
-
-createTable('tb_TrackingSwapToCoin', {
-    fields: {
-        quantityPiece: 'int',
-        time: 'varchar(100)',
-        userId: 'int',
-        pieceId: 'int',
-        coinId: 'int',
     },
     timestamp: true
 });
