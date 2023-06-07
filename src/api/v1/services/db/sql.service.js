@@ -107,14 +107,14 @@ const that = module.exports = {
             return await select(table, { fields: fields ?? columns, queryAtTheEnd: `WHERE id IN (${insertedIds.join(", ")})` });
         }
 
-        const update = async (table, { data = {}, queryAtTheEnd, connection, where: condition }) => {
+        const update = async (table, { data = {}, queryAtTheEnd, connection, fields, where: condition }) => {
             if (Object.keys(data).length === 0) return;
             const dataSet = Object.entries(data).map((item) => `${item[0]} = ?`).join(", ");
             const query = `UPDATE ${table} SET ${dataSet} ${queryAtTheEnd ?? mergeCondition(condition)}`;
             await execQuery({ query, data: Object.values(data), connection });
 
             const dataUpdated = await select(table, {
-                fields: Object.keys('id' in data ? data : { ...data, id: null }),
+                fields: fields ?? Object.keys('id' in data ? data : { ...data, id: null }),
                 connection,
                 queryAtTheEnd,
                 where: condition

@@ -16,12 +16,13 @@ module.exports = {
             return serviceResult();
         }
     },
-    updateUser_Piece: async ({ data, where: condition, connection }) => {
+    updateUser_Piece: async ({ data, fields, where: condition, connection }) => {
         try {
             return serviceResult({
                 status: SERVICE_STATUS.SUCCESS,
                 message: 'Update User_Piece success',
                 data: await update("tb_User_Piece", {
+                    fields,
                     data,
                     where: condition,
                     connection

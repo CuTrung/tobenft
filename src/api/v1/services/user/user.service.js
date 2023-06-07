@@ -181,6 +181,7 @@ const that = module.exports = {
                     dataUpdated = dataDeleteUserPiece
                 } else {
                     const { data: dataUpdateUserPiece } = await updateUser_Piece({
+                        fields: ['quantity', 'pieceId'],
                         data: {
                             quantity: userPiece[0].quantity - quantitySwap
                         },
