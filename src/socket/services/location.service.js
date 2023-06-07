@@ -2,7 +2,7 @@ const { Op, mysqlService } = require("@v1/services/db/sql.service");
 const { getLocationBy, updateLocation_Piece, getLocation_PieceBy } = require("@v1/services/location.service");
 const { getPieceBy, updatePieceBy } = require("@v1/services/piece.service");
 const { createUser_LocationNFTPiece } = require("@v1/services/user/user_LocationNFTPiece.service");
-const { getUser_PieceBy, updateUser_Piece } = require("@v1/services/user/user_Piece.service");
+const { getUser_PieceBy, updateUser_Piece, createUser_Piece, createTrackingUser_Piece } = require("@v1/services/user/user_Piece.service");
 const { serviceResult, SERVICE_STATUS } = require("@v1/utils/api.util");
 const { calculateDistanceKm, toDateTimeMySQL } = require("@v1/utils/index.util");
 const { transaction } = mysqlService()
@@ -147,6 +147,16 @@ const that = module.exports = {
                             connection
                         })
                     }
+
+                    const { data: dataTrackingUser_Piece } = await createTrackingUser_Piece({
+                        userId: 1,
+                        pieceId,
+                        time: toDateTimeMySQL(new Date()),
+                        quantityChanging: +1,
+                        connection
+                    })
+
+                    if (dataTrackingUser_Piece === "") return sendResult(serviceResult());
 
                     return piece[0];
                 })
