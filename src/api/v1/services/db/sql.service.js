@@ -13,6 +13,7 @@ const that = module.exports = {
     TYPE_JOIN,
     Op,
     mysqlService: () => {
+
         const execQuery = async ({ query, data = "", connection }) => {
             let dataExec = [];
             // Ko bắt try catch để được chạy vào try catch của transaction
@@ -32,7 +33,7 @@ const that = module.exports = {
         }
 
         // Khi có timestamp sẽ tự động tạo 2 cột createdAt and updatedAt
-        const createTable = async (tableName, { fields = {}, timestamp }) => {
+        const createTable = async (table, { fields = {}, timestamp }) => {
             const isStringMySQL = (value) => {
                 const DATA_TYPE_STRING_MYSQL = ['VARCHAR', 'TEXT'];
                 return DATA_TYPE_STRING_MYSQL.includes(value.split('(')[0].replace(" ", "").toUpperCase());
@@ -51,7 +52,7 @@ const that = module.exports = {
                 columns.push('createdAt DATETIME DEFAULT CURRENT_TIMESTAMP', 'updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
             }
 
-            const query = `CREATE TABLE IF NOT EXISTS ${tableName} (id INT AUTO_INCREMENT PRIMARY KEY, ${columns.join(", ")}) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`;
+            const query = `CREATE TABLE IF NOT EXISTS ${table} (id INT AUTO_INCREMENT PRIMARY KEY, ${columns.join(", ")}) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`;
             const [rows] = await execQuery({ query });
             return rows;
         }
@@ -167,8 +168,14 @@ const that = module.exports = {
             return data;
         }
 
+        const dropAllTables = async () => {
+            const querySelect = `SELECT TABLE_NAME FROM information_schema.tables WHERE table_schema = '${process.env.DB_MYSQL_NAME}'`;
+            const [rows] = await execQuery({ query: querySelect })
+            return await execQuery({ query: `DROP TABLE ${rows.map(item => item.TABLE_NAME).join(", ")}` });
+        }
+
         return {
-            createTable, select, insert, update, _delete, transaction
+            createTable, select, insert, update, _delete, transaction, dropAllTables
         }
     }
 }

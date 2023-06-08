@@ -6,6 +6,9 @@ const locationRouteV1 = require('./location/location.route.v1');
 const userRouteV1 = require('./user/user.route.v1');
 const { checkVersion } = require('@v1/middlewares/index.middleware');
 const { runMigrate } = require('@v1/controllers/index.controller');
+const { checkJWT } = require('@v1/middlewares/auth.middleware');
+
+router.all("*", checkJWT);
 
 router.route('/auth*')
     .all(checkVersion({

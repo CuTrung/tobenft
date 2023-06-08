@@ -1,10 +1,11 @@
-const { register, login } = require("@v1/services/auth.service");
+const { redisService } = require("@v1/services/db/nosql.service");
 const { Op } = require("@v1/services/db/sql.service");
 const { getPieceBy } = require("@v1/services/piece.service");
 const { swapPiecesToCoin } = require("@v1/services/user/user.service");
 const { serviceResult, SERVICE_STATUS } = require("@v1/utils/api.util");
+const { getPayloadJWT, verifyJWT } = require("@v1/utils/token.util");
 const { validateRequest } = require("@v1/validations/index.validation");
-
+const { get } = redisService();
 
 module.exports = {
     getPieceDetails: async (req, res) => {
@@ -17,13 +18,13 @@ module.exports = {
                 message: messagesError.join("OR"),
             }))
 
-        const { status } = await getPieceBy({
+        const data = await getPieceBy({
             where: {
                 [Op.AND]: [{ id: req.params.id }]
             }
-
         });
-        return res.status(status === SERVICE_STATUS.ERROR ? 500 : 200).json(data)
+
+        return res.status(data.status === SERVICE_STATUS.ERROR ? 500 : 200).json(data)
     },
 
     swapPiecesToCoin: async (req, res) => {

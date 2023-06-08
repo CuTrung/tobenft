@@ -162,6 +162,13 @@ const that = module.exports = {
 
                 if (userPiece === "") return serviceResult();
 
+                if (quantitySwap > userPiece[0].quantity)
+                    return resFormat({
+                        status: SERVICE_STATUS.SUCCESS,
+                        message: "Quantity piece is not enough to swap"
+                    })
+
+
                 if (userPiece.length < 0)
                     return resFormat({
                         status: SERVICE_STATUS.SUCCESS,
@@ -202,7 +209,7 @@ const that = module.exports = {
                 // ...
 
 
-                // Tạo lịch sử
+                // Theo dõi user 
                 const { data: dataTrackingUser_Piece } = await createTrackingUser_Piece({
                     userId: userPiece.userId,
                     pieceId: userPiece.pieceId,

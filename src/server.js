@@ -13,6 +13,8 @@ module.exports = initServer = (app) => {
         database: process.env.DB_MYSQL_NAME,
     })
 
+    connectRedis({})
+
     // connectMongoDB({
     //     host: process.env.DB_HOST,
     //     database: process.env.DB_NAME,

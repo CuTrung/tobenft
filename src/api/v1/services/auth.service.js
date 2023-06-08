@@ -3,18 +3,20 @@ const { compareHashString, createJWT, hashString } = require("@v1/utils/token.ut
 const { getUserBy, createUser, } = require("./user/user.service");
 const { Op } = require("./db/sql.service");
 const { updatePieceBy, getPieceBy } = require("./piece.service");
+const { redisService } = require("./db/nosql.service");
+const { set, get } = redisService();
 
-module.exports = {
+const that = module.exports = {
     register: async ({ name, email, password }) => {
         try {
-            const { data: user, status } = await getUserBy({
+            const { data: user } = await getUserBy({
                 fields: ['id', 'name', 'password'],
                 where: {
                     [Op.AND]: [{ email }]
                 }
             });
 
-            if (status === SERVICE_STATUS.ERROR) return serviceResult();
+            if (user === "") return serviceResult();
 
             if (user[0])
                 return serviceResult({
@@ -33,6 +35,12 @@ module.exports = {
         }
 
     },
+    createAccessAndRefreshToken: (payload) => {
+        const { token: accessToken, publicKey: accessKey } = createJWT(payload);
+        const { token: refreshToken, publicKey: refreshKey } = createJWT(payload, '30d');
+
+        return { accessToken, accessKey, refreshToken, refreshKey };
+    },
     login: async ({ email, password }) => {
         try {
 
@@ -43,7 +51,7 @@ module.exports = {
                 }
             });
 
-            if (status === SERVICE_STATUS.ERROR) return serviceResult();
+            if (user === "") return serviceResult();
 
             const isCorrectPassword = user[0] && compareHashString(password.toString(), user[0].password);
             if (user[0] === undefined || !isCorrectPassword)
@@ -52,28 +60,20 @@ module.exports = {
                     message: `Username or password isn't correct !`,
                 })
 
-            const { token: accessToken, publicKey: accessKey } = createJWT({
+            const { accessKey, accessToken, refreshKey, refreshToken } = that.createAccessAndRefreshToken({
                 userId: user[0].id,
                 name: user[0].name,
                 roles: []
-            });
+            })
 
-            const { token: refreshToken, publicKey: refreshKey } = createJWT({
-                userId: user[0].id,
-                name: user[0].name,
-                roles: []
-            }, '30d');
-            // Lưu vào redis ?
+            // Lưu vào redis 
+            await set(`access:${user[0].id}`, accessKey);
+            await set(`refresh:${user[0].id}`, refreshKey);
 
             return serviceResult({
                 status: SERVICE_STATUS.SUCCESS,
                 message: "Login success !",
-                data: {
-                    accessToken,
-                    accessKey,
-                    refreshToken,
-                    refreshKey
-                }
+                data: { accessToken, refreshToken }
             });
         } catch (error) {
             console.log(">>> ~ file: auth.service.js:70 ~ login: ~ error: ", error)

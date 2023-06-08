@@ -11,14 +11,14 @@ const { transaction } = mysqlService()
 const that = module.exports = {
     calculateDistance: async ({ userLng, userLat, locationId }) => {
         try {
-            const { data: location, status } = await getLocationBy({
+            const { data: location } = await getLocationBy({
                 fields: ['longitude', 'latitude'],
                 where: {
                     [Op.AND]: [{ id: locationId }]
                 }
             })
 
-            if (status === SERVICE_STATUS.ERROR) return serviceResult()
+            if (location === "") return serviceResult()
             const distanceInMeters = calculateDistanceKm({
                 lon1: location[0].longitude,
                 lat1: location[0].latitude,
@@ -50,7 +50,7 @@ const that = module.exports = {
                     },
                 });
 
-                if (statusLocationPiece === SERVICE_STATUS.ERROR)
+                if (locationPiece === "")
                     return sendResult(serviceResult())
 
                 if (locationPiece[0].amountPiece === 0) {
@@ -67,7 +67,7 @@ const that = module.exports = {
                     locationId
                 });
 
-                if (statusDistance === SERVICE_STATUS.ERROR)
+                if (distanceInMeters === "")
                     return sendResult(serviceResult())
 
                 if (distanceInMeters > MIN_RADIUS_IN_METERS) {
@@ -97,10 +97,10 @@ const that = module.exports = {
                         },
                         connection
                     })
-                    if (pieceStatus === SERVICE_STATUS.ERROR)
+                    if (piece === "")
                         return sendResult(serviceResult())
 
-                    const { data: dataPieceUpdate, status: pieceStatusUpdate } = await updatePieceBy({
+                    const { data: dataPieceUpdate } = await updatePieceBy({
                         data: { quantityReality: piece[0].quantityReality - 1 },
                         where: {
                             [Op.AND]: [{ id: pieceId }]
@@ -108,12 +108,12 @@ const that = module.exports = {
                         connection
                     })
 
-                    if (pieceStatusUpdate === SERVICE_STATUS.ERROR)
+                    if (dataPieceUpdate === "")
                         return sendResult(serviceResult())
 
 
                     // Insert tb_User_LocationNFTPiece
-                    const { status: userLocationNFTPieceStatus } = await createUser_LocationNFTPiece({
+                    const { data: dataCreateUserLocation } = await createUser_LocationNFTPiece({
                         quantityPiece: 1,
                         userId: 1,
                         locationNFTPieceId: dataLocationPiece[0].id,
@@ -121,7 +121,7 @@ const that = module.exports = {
                         connection
                     })
 
-                    if (userLocationNFTPieceStatus === SERVICE_STATUS.ERROR)
+                    if (dataCreateUserLocation === "")
                         return sendResult(serviceResult())
 
                     const { data: dataUserPiece } = await getUser_PieceBy({
@@ -152,7 +152,7 @@ const that = module.exports = {
                         userId: 1,
                         pieceId,
                         time: toDateTimeMySQL(new Date()),
-                        quantityChanging: +1,
+                        quantityChanging: `+1`,
                         connection
                     })
 

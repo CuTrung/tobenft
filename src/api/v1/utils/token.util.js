@@ -8,11 +8,13 @@ const that = module.exports = {
     createRSAKeyPair: () => require('node:crypto').generateKeyPairSync('rsa', {
         modulusLength: 2048, // độ mạnh của key 
         publicKeyEncoding: {
-            type: "pkcs1",
+            // type: "pkcs1",
+            type: 'spki',
             format: "pem",
         },
         privateKeyEncoding: {
-            type: "pkcs1",
+            // type: "pkcs1",
+            type: 'pkcs8',
             format: "pem",
         },
     }),
@@ -22,7 +24,6 @@ const that = module.exports = {
         const { privateKey, publicKey } = that.createRSAKeyPair();
         let token;
         try {
-            console.log(privateKey);
             token = sign(payload, privateKey, {
                 expiresIn,
                 algorithm: 'RS256'
@@ -35,7 +36,7 @@ const that = module.exports = {
     verifyJWT: (token, publicKey) => {
         let decoded;
         try {
-            const { iat, exp, ...data } = verify(token, publicKey);
+            const { iat, exp, ...data } = verify(token, publicKey, { algorithms: ['RS256'] });
             decoded = {
                 ...data,
                 createdAt: formatDate(new Date(iat * 1000)),
@@ -44,7 +45,10 @@ const that = module.exports = {
         } catch (error) {
             console.log(error)
             if (error instanceof TokenExpiredError) {
-                decoded = { expiredAt: formatDate(new Date(error.expiredAt)) }
+                decoded = {
+                    isExpired: true,
+                    expiredAt: formatDate(new Date(error.expiredAt))
+                }
             }
         }
         return decoded;

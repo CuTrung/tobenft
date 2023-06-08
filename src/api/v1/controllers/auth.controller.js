@@ -26,8 +26,11 @@ module.exports = {
             return res.status(400).json(serviceResult({
                 message: messagesError.join("OR"),
             }))
-        const data = await login(req.body);
-        return res.status(data.status === SERVICE_STATUS.ERROR ? 500 : 200).json(data)
+        const { data, message, status } = await login(req.body);
+        res.cookie('accessToken', data.accessToken, { maxAge: 1000 * 60 * 60 * 24 });
+        res.cookie('refreshToken', data.refreshToken, { maxAge: 1000 * 60 * 60 * 24 * 30 });
+
+        return res.status(status === SERVICE_STATUS.ERROR ? 500 : 200).json({ status, message })
     },
 
 }

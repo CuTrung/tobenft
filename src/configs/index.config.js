@@ -2,6 +2,7 @@ module.exports = {
     configCors: (app) => {
         const cors = require('cors');
         const corsOptions = {
+            credentials: true,
             origin: function (origin, callback) {
                 if (process.env.WHITE_LIST.includes(origin) || origin === undefined) {
                     callback(null, true)

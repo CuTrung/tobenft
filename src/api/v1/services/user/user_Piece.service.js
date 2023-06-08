@@ -1,5 +1,5 @@
 const { serviceResult, SERVICE_STATUS } = require("@v1/utils/api.util");
-const { mysqlService } = require("../db/sql.service")
+const { mysqlService, Op } = require("../db/sql.service")
 const { select, insert, update, _delete } = mysqlService();
 
 module.exports = {
@@ -75,4 +75,23 @@ module.exports = {
             return serviceResult()
         }
     },
+    getHistoryChangingPieces: async ({ userId }) => {
+        try {
+            return serviceResult({
+                status: SERVICE_STATUS.SUCCESS,
+                message: 'Get TrackingUser_Piece success',
+                data: await select('tb_TrackingUser_Piece tu', {
+                    fields,
+                    queryAtTheEnd: 'INNER JOIN tb_Piece p ON tu.pieceId = p.id',
+                    where: {
+                        [Op.AND]: [{ userId }]
+                    }
+                })
+            })
+        } catch (error) {
+            console.log(">>> ~ file: user_Piece.service.js:92 ~ getHistoryChangingPieces: ~ error: ", error)
+
+            return serviceResult();
+        }
+    }
 }

@@ -47,12 +47,13 @@ const that = module.exports = {
     },
     getAllLocation: async ({ userLat, userLng, kilometers = 5 } = {}) => {
         try {
+            // Về sau check thêm điều kiện item đó còn thời hạn không (timeEnd)
             const dataSelect = await select('tb_locationnft l', {
                 fields: ['l.id', 'l.address', 'l.latitude', 'l.longitude', 'p.id as `pieceId`', 'p.itemId', 'p.quantityReality', 'i.splitTo', 'i.amountOfCoins'],
                 queryAtTheEnd: 'INNER JOIN tb_locationnft_piece lp ON lp.locationId = l.id INNER JOIN tb_Piece p ON lp.pieceId = p.id INNER JOIN tb_item i ON i.id = p.itemId',
             });
 
-            let data = [];
+            const data = [];
             for (let item of dataSelect) {
                 const distance = calculateDistanceKm({
                     lat1: userLat,
@@ -79,7 +80,6 @@ const that = module.exports = {
 
                 let match = data.find(r => r.id === item.id);
                 if (match) {
-
                     match.pieces = match.pieces.concat(item.pieces);
                 } else {
                     data.push(item);
