@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "start": "nodemon index.js",
+        "start": "node --watch index.js",
         "test": "jest"
     },
     "repository": {
@@ -36,8 +36,7 @@
         "socket.io-client": "^4.6.1"
     },
     "devDependencies": {
-        "morgan": "^1.10.0",
-        "nodemon": "^2.0.22"
+        "morgan": "^1.10.0"
     },
     "_moduleAliases": {
         "@src": "./src/",

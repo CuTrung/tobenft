@@ -21,7 +21,6 @@ module.exports = async () => {
         fields: {
             itemId: 'int',
             src: 'varchar(255)',
-            // quantityCoin: 3,
             quantity: 'int',
             quantityReality: 'int',
         },
@@ -43,9 +42,24 @@ module.exports = async () => {
 
     await createTable('tb_LocationNFT', {
         fields: {
+            name: 'varchar(200)',
             address: 'varchar(100)',
+            countryId: 'int(10)',
+            cityId: 'int(10)',
+            ownerId: 'int',
             latitude: 'varchar(50)',
             longitude: 'varchar(50)',
+            description: 'varchar(1000)',
+            email: 'varchar(200)',
+            phone: 'varchar(11)',
+            hoursOpen: 'varchar(100)',
+            price: 'float',
+            rating: 'float',
+            placeId: 'int',
+            imageId: 'varchar(100)',
+            dateStart: 'varchar(100)',
+            dateEnd: 'varchar(100)',
+            linkWebsite: 'varchar(1000)',
             active: 'int(1) DEFAULT 1',
         },
         timestamp: true
@@ -54,7 +68,13 @@ module.exports = async () => {
     await createTable('tb_Coin', {
         fields: {
             name: 'varchar(100)',
+            type: 'varchar(100)',
+            symbol: 'varchar(100',
             price: 'float',
+            platform: 'varchar(100)',
+            imageId: 'int',
+            fee_widthraw: 'float',
+            active: 'int(2) DEFAULT 1'
         },
         timestamp: true
     });
@@ -64,6 +84,7 @@ module.exports = async () => {
             quantity: 'int',
             userId: 'int',
             pieceId: 'int',
+            active: 'int(1) DEFAULT 1'
         },
         timestamp: true
     });
@@ -72,6 +93,7 @@ module.exports = async () => {
     await createTable('tb_LocationNFT_Piece', {
         fields: {
             amountPiece: 'int',
+            amountPieceReality: 'int',
             locationId: 'int',
             pieceId: 'int'
         },
@@ -106,6 +128,7 @@ module.exports = async () => {
             time: 'varchar(100)',
             userId: 'int',
             pieceId: 'int',
+            active: 'int(2) DEFAULT 1'
         },
         timestamp: true
     });

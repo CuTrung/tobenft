@@ -176,7 +176,7 @@ const that = module.exports = {
                     })
 
                 let dataUpdated;
-                if (userPiece[0].quantity === 1 && userPiece[0].quantity >= quantitySwap) {
+                if (userPiece[0].quantity === 1) {
                     const { data: dataDeleteUserPiece } = await deleteUser_PieceBy({
                         where: {
                             [Op.AND]: [{ userId, pieceId }]

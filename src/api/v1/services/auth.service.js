@@ -67,8 +67,9 @@ const that = module.exports = {
             })
 
             // Lưu vào redis 
-            await set(`access:${user[0].id}`, accessKey);
-            await set(`refresh:${user[0].id}`, refreshKey);
+            const _1d = 60 * 60 * 24;
+            await set(`access:${user[0].id}`, accessKey, _1d);
+            await set(`refresh:${user[0].id}`, refreshKey, _1d * 30);
 
             return serviceResult({
                 status: SERVICE_STATUS.SUCCESS,

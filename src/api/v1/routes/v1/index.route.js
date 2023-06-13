@@ -4,11 +4,11 @@ const authRouteV1 = require('./auth/auth.route.v1');
 const pieceRouteV1 = require('./piece/piece.route.v1');
 const locationRouteV1 = require('./location/location.route.v1');
 const userRouteV1 = require('./user/user.route.v1');
-const { checkVersion } = require('@v1/middlewares/index.middleware');
+const { checkVersion, checkInfoClient } = require('@v1/middlewares/index.middleware');
 const { runMigrate } = require('@v1/controllers/index.controller');
 const { checkJWT } = require('@v1/middlewares/auth.middleware');
 
-router.all("*", checkJWT);
+router.all("*", checkInfoClient, checkJWT);
 
 router.route('/auth*')
     .all(checkVersion({

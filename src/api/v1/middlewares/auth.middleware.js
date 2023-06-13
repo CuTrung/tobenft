@@ -4,7 +4,7 @@ const { serviceResult, SERVICE_STATUS } = require("@v1/utils/api.util");
 const { verifyJWT, getPayloadJWT } = require("@v1/utils/token.util");
 const { get } = redisService();
 
-const nonSecureAuthPaths = ['/auth/login', '/auth/register',];
+const nonSecureAuthPaths = ['/auth/login', '/auth/register'];
 module.exports = {
     checkJWT: async (req, res, next) => {
         if (nonSecureAuthPaths.includes(req.path))
@@ -36,14 +36,15 @@ module.exports = {
 
             const { accessKey, accessToken, refreshKey, refreshToken } = createAccessAndRefreshToken(payload);
 
-            await set(`access:${userId}`, accessKey);
-            await set(`refresh:${userId}`, refreshKey);
+            const _1d = 1000 * 60 * 60 * 24;
+            await set(`access:${userId}`, accessKey, _1d);
+            await set(`refresh:${userId}`, refreshKey, _1d * 30);
 
-            res.cookie('accessToken', accessToken, { maxAge: 1000 * 60 * 60 * 24 });
-            res.cookie('refreshToken', refreshToken, { maxAge: 1000 * 60 * 60 * 24 * 30 });
+            res.cookie('accessToken', accessToken, { maxAge: _1d });
+            res.cookie('refreshToken', refreshToken, { maxAge: _1d * 30 });
         }
 
-        // Check role user
+        // Check roles user
 
         next();
     }
