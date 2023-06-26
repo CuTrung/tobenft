@@ -8,7 +8,7 @@ const that = module.exports = {
             return serviceResult({
                 status: SERVICE_STATUS.SUCCESS,
                 message: 'Get piece success',
-                data: await select('tb_piece', { fields, where: condition, connection })
+                data: await select('tb_Piece', { fields, where: condition, connection })
             })
         } catch (error) {
             console.log(">>> ~ file: piece.service.js:14 ~ getPieceBy: ~ error: ", error)
@@ -20,7 +20,7 @@ const that = module.exports = {
             return serviceResult({
                 status: SERVICE_STATUS.SUCCESS,
                 message: 'Update piece success',
-                data: await update("tb_piece", {
+                data: await update("tb_Piece", {
                     data,
                     where: condition,
                     connection

@@ -10,7 +10,7 @@ const that = module.exports = {
             return serviceResult({
                 status: SERVICE_STATUS.SUCCESS,
                 message: 'Get location success',
-                data: await select('tb_locationnft', { fields, where: condition })
+                data: await select('tb_Locationnft', { fields, where: condition })
             })
         } catch (error) {
             console.log(">>> ~ file: location.service.js:14 ~ getLocationBy: ~ error: ", error)
@@ -48,9 +48,9 @@ const that = module.exports = {
     getAllLocation: async ({ userLat, userLng, kilometers = 5 } = {}) => {
         try {
             // Về sau check thêm điều kiện item đó còn thời hạn không (timeEnd)
-            const dataSelect = await select('tb_locationnft l', {
+            const dataSelect = await select('tb_Locationnft l', {
                 fields: ['l.id', 'l.address', 'l.latitude', 'l.longitude', 'p.id as `pieceId`', 'p.itemId', 'p.quantityReality', 'i.splitTo', 'i.amountOfCoins'],
-                queryAtTheEnd: 'INNER JOIN tb_locationnft_piece lp ON lp.locationId = l.id INNER JOIN tb_Piece p ON lp.pieceId = p.id INNER JOIN tb_item i ON i.id = p.itemId',
+                queryAtTheEnd: 'INNER JOIN tb_Locationnft_Piece lp ON lp.locationId = l.id INNER JOIN tb_Piece p ON lp.pieceId = p.id INNER JOIN tb_Item i ON i.id = p.itemId',
             });
 
             const data = [];

@@ -14,7 +14,7 @@ const that = module.exports = {
             return serviceResult({
                 status: SERVICE_STATUS.SUCCESS,
                 message: 'Get user success',
-                data: await select('tb_user', { fields, where: condition })
+                data: await select('tb_User', { fields, where: condition })
             })
         } catch (error) {
             console.log(">>> ~ file: user.service.js:15 ~ getUserBy: ~ error: ", error)
@@ -26,7 +26,7 @@ const that = module.exports = {
             return serviceResult({
                 status: SERVICE_STATUS.SUCCESS,
                 message: 'Create user success',
-                data: await insert('tb_user', {
+                data: await insert('tb_User', {
                     data: [{ name, email, password }],
                 })
             })

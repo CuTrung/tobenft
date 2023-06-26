@@ -7,7 +7,7 @@ module.exports = {
             return serviceResult({
                 status: SERVICE_STATUS.SUCCESS,
                 message: 'Get item success',
-                data: await select('tb_item', { fields, where: condition, connection })
+                data: await select('tb_Item', { fields, where: condition, connection })
             })
         } catch (error) {
             console.log(">>> ~ file: item.service.js:12 ~ getItemBy: ~ error: ", error)
