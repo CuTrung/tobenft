@@ -3,7 +3,7 @@ const { addDays, formatDate } = require("../utils/index.util");
 const { insert } = mysqlService();
 
 module.exports = async () => {
-    await insert('tb_item', {
+    await insert('tb_Item', {
         data: [
             {
                 name: 'IPhone 11',
@@ -26,7 +26,7 @@ module.exports = async () => {
         ]
     })
 
-    await insert('tb_piece', {
+    await insert('tb_Piece', {
         data: [
             {
                 itemId: 1,

@@ -7,7 +7,7 @@ module.exports = async () => {
             name: 'varchar(255)',
             timeStart: 'varchar(100)',
             timeEnd: 'varchar(100)',
-            active: 'int(1) DEFAULT 1',
+            active: 'int DEFAULT 1',
             src: 'varchar(255)',
             splitTo: 'int', // cắt thành n piece
             amountOfCoins: 'int', // default: tobe coin

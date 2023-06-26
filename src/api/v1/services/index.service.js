@@ -8,7 +8,7 @@ const runSeeders = require('@v1/seeders/index.seeder')
 module.exports = {
     runMigrate: async () => {
         try {
-            await dropAllTables()
+            // await dropAllTables()
             await createModels()
             await runSeeders()
 

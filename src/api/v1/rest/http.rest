@@ -18,7 +18,9 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3000/api/piece/1
+
+# GET http://localhost:3000/api/piece/1
+GET https://tobenft-uhom.onrender.com/api/piece/1
 Content-Type: application/json
 
 

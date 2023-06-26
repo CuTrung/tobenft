@@ -48,9 +48,9 @@ const that = module.exports = {
                 }
             }
 
-            if (timestamp) {
-                columns.push('createdAt DATETIME DEFAULT CURRENT_TIMESTAMP', 'updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
-            }
+            // if (timestamp) {
+            //     columns.push('createdAt DATETIME DEFAULT CURRENT_TIMESTAMP', 'updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
+            // }
 
             const query = `CREATE TABLE IF NOT EXISTS ${table} (id INT AUTO_INCREMENT PRIMARY KEY, ${columns.join(", ")}) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`;
             const [rows] = await execQuery({ query });
@@ -171,7 +171,7 @@ const that = module.exports = {
         const dropAllTables = async () => {
             const querySelect = `SELECT TABLE_NAME FROM information_schema.tables WHERE table_schema = '${process.env.DB_MYSQL_NAME}'`;
             const [rows] = await execQuery({ query: querySelect })
-            return await execQuery({ query: `DROP TABLE IF EXISTS ${rows.map(item => item.TABLE_NAME).join(", ")}` });
+            return await execQuery({ query: `DROP TABLE ${rows.map(item => item.TABLE_NAME).join(", ")}` });
         }
 
         return {
