@@ -31,7 +31,7 @@ module.exports = initServer = (app) => {
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
 
-    configWriteLog(app);
+    // configWriteLog(app);
     configCors(app);
     initRoutes(app);
 }
