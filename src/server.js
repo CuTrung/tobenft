@@ -7,13 +7,14 @@ module.exports = initServer = (app) => {
     const cookieParser = require('cookie-parser');
 
     connectMySQL({
+        port: process.env.DB_MYSQL_PORT,
         host: process.env.DB_MYSQL_HOST,
         user: process.env.DB_MYSQL_USER,
         password: process.env.DB_MYSQL_PASSWORD,
         database: process.env.DB_MYSQL_NAME,
     })
 
-    connectRedis({})
+    // connectRedis({})
 
     // connectMongoDB({
     //     host: process.env.DB_HOST,
