@@ -23,5 +23,6 @@ module.exports = {
         const userAgent = req.headers['user-agent']
         const url = protocol + '://' + host + baseUrl;
         console.log(">>> Check", formatDate(_startTime));
+        next();
     }
 }

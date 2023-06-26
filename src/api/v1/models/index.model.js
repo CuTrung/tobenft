@@ -69,7 +69,7 @@ module.exports = async () => {
         fields: {
             name: 'varchar(100)',
             type: 'varchar(100)',
-            symbol: 'varchar(100',
+            symbol: 'varchar(100)',
             price: 'float',
             platform: 'varchar(100)',
             imageId: 'int',

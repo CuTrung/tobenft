@@ -171,7 +171,7 @@ const that = module.exports = {
         const dropAllTables = async () => {
             const querySelect = `SELECT TABLE_NAME FROM information_schema.tables WHERE table_schema = '${process.env.DB_MYSQL_NAME}'`;
             const [rows] = await execQuery({ query: querySelect })
-            return await execQuery({ query: `DROP TABLE ${rows.map(item => item.TABLE_NAME).join(", ")}` });
+            return await execQuery({ query: `DROP TABLE IF EXISTS ${rows.map(item => item.TABLE_NAME).join(", ")}` });
         }
 
         return {
