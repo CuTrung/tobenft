@@ -2,41 +2,22 @@ const { hashSync, genSaltSync, compareSync } = require('bcryptjs');
 const { TokenExpiredError, sign, verify } = require('jsonwebtoken');
 const { formatDate } = require('./index.util');
 
-// Save publicKey to DB, khi user gửi request đến thì decode phần payload của JWT (Sử dụng Buffer để decode base64) để lấy ra userId, sau đó select trong DB để lấy publicKey rồi mới verify để xem hợp lệ hay không.
-
 const that = module.exports = {
-    createRSAKeyPair: () => require('node:crypto').generateKeyPairSync('rsa', {
-        modulusLength: 2048, // độ mạnh của key 
-        publicKeyEncoding: {
-            // type: "pkcs1",
-            type: 'spki',
-            format: "pem",
-        },
-        privateKeyEncoding: {
-            // type: "pkcs1",
-            type: 'pkcs8',
-            format: "pem",
-        },
-    }),
     hashString: (str) => hashSync(str, genSaltSync(10)),
     compareHashString: (str, hashStr) => compareSync(str, hashStr),
     createJWT: (payload, expiresIn = '1d') => {
-        const { privateKey, publicKey } = that.createRSAKeyPair();
         let token;
         try {
-            token = sign(payload, privateKey, {
-                expiresIn,
-                algorithm: 'RS256'
-            });
+            token = sign(payload, process.env.SECRET_KEY_JWT, { expiresIn });
         } catch (error) {
             console.log(error)
         }
-        return token ? { token, publicKey } : token;
+        return token;
     },
-    verifyJWT: (token, publicKey) => {
+    verifyJWT: (token) => {
         let decoded;
         try {
-            const { iat, exp, ...data } = verify(token, publicKey, { algorithms: ['RS256'] });
+            const { iat, exp, ...data } = verify(token, process.env.SECRET_KEY_JWT);
             decoded = {
                 ...data,
                 createdAt: formatDate(new Date(iat * 1000)),

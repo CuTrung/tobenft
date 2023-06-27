@@ -26,7 +26,7 @@ module.exports = initServer = (app) => {
     // })
 
     //  Trả về req.ip thực kể cả khi dùng proxy
-    app.set('trust proxy', true);
+    // app.set('trust proxy', true);
     app.use(cookieParser());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());

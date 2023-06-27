@@ -1,8 +1,8 @@
 const API_BACKEND = "ws://localhost:3000";
 
+// Gửi token để xác thực
 const auth = {
-    accessToken: 123,
-    refreshToken: 456
+    token: 123,
 }
 const locationSocket = io(`${API_BACKEND}/location`, { auth });
 

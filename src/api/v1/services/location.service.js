@@ -10,7 +10,7 @@ const that = module.exports = {
             return serviceResult({
                 status: SERVICE_STATUS.SUCCESS,
                 message: 'Get location success',
-                data: await select('tb_Locationnft', { fields, where: condition })
+                data: await select('tb_LocationNFT', { fields, where: condition })
             })
         } catch (error) {
             console.log(">>> ~ file: location.service.js:14 ~ getLocationBy: ~ error: ", error)
@@ -22,7 +22,7 @@ const that = module.exports = {
             return serviceResult({
                 status: SERVICE_STATUS.SUCCESS,
                 message: 'Get location_piece success',
-                data: await select('tb_Locationnft_Piece', { fields, where: condition })
+                data: await select('tb_LocationNFT_Piece', { fields, where: condition })
             })
         } catch (error) {
             console.log(">>> ~ file: location.service.js:26 ~ getLocation_PieceBy: ~ error: ", error)
@@ -34,7 +34,7 @@ const that = module.exports = {
             return serviceResult({
                 status: SERVICE_STATUS.SUCCESS,
                 message: 'Update location_Piece success',
-                data: await update("tb_Locationnft_Piece", {
+                data: await update("tb_LocationNFT_Piece", {
                     data,
                     connection,
                     where: condition
@@ -48,9 +48,9 @@ const that = module.exports = {
     getAllLocation: async ({ userLat, userLng, kilometers = 5 } = {}) => {
         try {
             // Về sau check thêm điều kiện item đó còn thời hạn không (timeEnd)
-            const dataSelect = await select('tb_Locationnft l', {
+            const dataSelect = await select('tb_LocationNFT l', {
                 fields: ['l.id', 'l.address', 'l.latitude', 'l.longitude', 'p.id as `pieceId`', 'p.itemId', 'p.quantityReality', 'i.splitTo', 'i.amountOfCoins'],
-                queryAtTheEnd: 'INNER JOIN tb_Locationnft_Piece lp ON lp.locationId = l.id INNER JOIN tb_Piece p ON lp.pieceId = p.id INNER JOIN tb_Item i ON i.id = p.itemId',
+                queryAtTheEnd: 'INNER JOIN tb_LocationNFT_Piece lp ON lp.locationId = l.id INNER JOIN tb_Piece p ON lp.pieceId = p.id INNER JOIN tb_Item i ON i.id = p.itemId',
             });
 
             const data = [];

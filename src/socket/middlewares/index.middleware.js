@@ -7,11 +7,11 @@ module.exports = {
     },
 
     checkAuth: (socket, next) => {
-        const { accessToken, refreshToken } = socket.handshake.auth;
+        const { token } = socket.handshake.auth;
 
-        if (accessToken) {
+        if (token) {
             socket.mess = 'valid'
-            console.log(">>> accessToken", accessToken);
+            console.log(">>> Token", token);
             next();
         }
         socket.disconnect();

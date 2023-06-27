@@ -1,0 +1,31 @@
+POST https://tobenft-uhom.onrender.com/api/auth/register
+Content-Type: application/json
+x-api-version: '2023-05-19'
+
+{
+    "name": "test",
+    "email": "test@gmail.com",
+    "password": 123456
+}
+
+###
+POST https://tobenft-uhom.onrender.com/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "test@gmail.com",
+    "password": 123456
+}
+
+###
+GET https://tobenft-uhom.onrender.com/api/piece/1
+Content-Type: application/json
+
+
+###
+POST https://tobenft-uhom.onrender.com/api/user/combine
+Content-Type: application/json
+
+{
+    "itemId": 1
+}

@@ -8,7 +8,7 @@ const { checkVersion, checkInfoClient } = require('@v1/middlewares/index.middlew
 const { runMigrate } = require('@v1/controllers/index.controller');
 const { checkJWT } = require('@v1/middlewares/auth.middleware');
 
-// router.all("*", checkInfoClient, checkJWT);
+router.all("*", checkInfoClient, checkJWT);
 
 router.route('/auth*')
     .all(checkVersion({

@@ -20,9 +20,9 @@ module.exports = {
     },
     checkInfoClient: (req, res, next) => {
         const { _startTime, headers: { host }, ip, path, protocol, baseUrl } = req;
+        const dateFormat = formatDate(_startTime);
         const userAgent = req.headers['user-agent']
         const url = protocol + '://' + host + baseUrl;
-        console.log(">>> Check", formatDate(_startTime));
         next();
     }
 }
