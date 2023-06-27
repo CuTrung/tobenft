@@ -1,3 +1,7 @@
+### Reset DB
+GET https://tobenft-uhom.onrender.com/api/db/migrate
+
+### 
 POST https://tobenft-uhom.onrender.com/api/auth/register
 Content-Type: application/json
 x-api-version: '2023-05-19'
@@ -17,15 +21,28 @@ Content-Type: application/json
     "password": 123456
 }
 
-###
+### Lấy mảnh chi tiết
 GET https://tobenft-uhom.onrender.com/api/piece/1
 Content-Type: application/json
 
+### Lấy toàn bộ location gần vị trí user nhất (trong khoảng <= 5)
+GET https://tobenft-uhom.onrender.com/api/location?userLat=10&userLng=10&kilometers=5
 
-###
+
+### Ghép vật phẩm
 POST https://tobenft-uhom.onrender.com/api/user/combine
 Content-Type: application/json
 
 {
     "itemId": 1
+}
+
+### Đổi mảnh ghép
+POST https://tobenft-uhom.onrender.com/api/piece/swap
+Content-Type: application/json
+
+{
+    "userId": 1,
+    "pieceId": 1,
+    "quantitySwap": 1
 }
